@@ -148,12 +148,12 @@ for df in rec_array[1:]:
     mocks_rec_merge = pd.merge(mocks_rec_merge, df, on='dbsnp', how='inner')
 
 open("mocks_rec_intersect.csv","w")
-mocks_rec_merge.to_csv("mocks_rec_intersect.csv", sep='\t')
+mocks_rec_merge.to_csv("csvs/mocks_rec_intersect.csv", sep='\t')
 stats.write("inter"+'\t'+"all_rec"+'\t'+str(len(mocks_rec_merge))+'\n')
 
 mocks_rec_merge=pd.concat(rec_array).drop_duplicates().reset_index(drop=True)
 open("mocks_rec_merge.csv","w")
-mocks_rec_merge.to_csv("mocks_rec_merge.csv", sep='\t')
+mocks_rec_merge.to_csv("csvs/mocks_rec_merge.csv", sep='\t')
 stats.write("merge"+'\t'+"all_rec"+'\t'+str(len(mocks_rec_merge))+'\n')
 
 #ALL NOT RECALIBRATED
@@ -247,3 +247,4 @@ for i in range(len(plot_array)):
 
     fig1.write_html("htmls/"+plot+".html")
     fig1.write_image("pdfs/"+plot+".pdf")
+    fig1.write_image("pngs/"+plot+".png")

@@ -10,7 +10,18 @@ import numpy as np
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
-def make_scatter(df,  condition, x, y, filt) :
+fold="results_cov/csvs/"
+
+def make_scatter(df,  condition, x, y, filt, stats) :
+
+	name = fold+condition+"_"+x+"_"+"_"+y+"_"+filt
+	df.to_csv(name+".csv", sep='\t')
+
+	f = open (stats, 'a')
+	f.write(condition+"_"+x+"_"+"_"+y+"_"+filt+'\t'+str(len(df))+'\n')
+	f.close()
+
+	'''
 	print ("in function make scatter")
 	name = "results_cov/pdfs/"+condition+"_"+x+"_"+"_"+y+"_"+filt
 	print (df, condition, x, y, filt)
@@ -32,7 +43,7 @@ def make_scatter(df,  condition, x, y, filt) :
 	boh = sns.relplot(data= df, x="af_x", y="af_y", hue="color", legend=False)
 	boh.set(xlabel=x, ylabel=y)
 	plt.savefig(name+'.pdf', dpi=300)
-
+'''
 
 def findnames (arr) :
 	res=[]
@@ -75,7 +86,7 @@ for i in range(n_arrays) :
 	print names_curr
 
 	stats='results_cov/stats'+names_arrays[i]
-	open (stats, 'w')
+	
 	cov='10' #quale coverage
 	opt='n' #non ricalibrato (n), ricalibrato (r)
 	if (i>1) :
@@ -102,9 +113,9 @@ for i in range(n_arrays) :
 		filB=((inter['af_x'] >= 0.2) & (inter['af_x'] <= 0.8)) | ((inter['af_y'] >= 0.2) & (inter['af_y'] <= 0.8))
 
 		interA = inter[filA]
-		make_scatter(interA, names_arrays[i], names_curr[x], names_curr[y], "A")
+		make_scatter(interA, names_arrays[i], names_curr[x], names_curr[y], "A", stats)
 		interB = inter[filB]
-		make_scatter(interA, names_arrays[i], names_curr[x], names_curr[y], "B")
+		make_scatter(interA, names_arrays[i], names_curr[x], names_curr[y], "B", stats)
 
 	dfs=[]
 		

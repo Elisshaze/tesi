@@ -26,7 +26,7 @@ def buildSets(globPath, minCov, minAF, maxAF, extention):
 					af = int(l[8])
 	
 				if cov >= minCov and af >= minAF and af <= maxAF:
-				sets[fname].add(rsid)
+					sets[fname].add(rsid)
 	return sets
 
 def plotUpset(data,outFile):

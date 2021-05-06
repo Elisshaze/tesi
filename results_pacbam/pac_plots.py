@@ -44,11 +44,12 @@ def unionSubsetCarbon(subset):
 
 minCov = [10,20]
 af = [(0.1,0.9),(0.2,0.8)]
-ex = [snps, pabs]
+ex = ['snps', 'pabs']
 
 for cov, afRange, extention in itertools.product(minCov,af, ex):
 	afMin = afRange[0]
 	afMax = afRange[1]	
+
 	setsCarbon = buildSets(out_pac+"/Carbon*."+extention,cov,afMin,afMax,extention)
 	plotUpset(setsCarbon,f'./images/Carbon_{cov}_{afMin}_{afMax}_{extention}.png')
 	setsMock = buildSets(out_pac+"/mock*."+extention,cov,afMin,afMax,extention)
@@ -57,6 +58,7 @@ for cov, afRange, extention in itertools.product(minCov,af, ex):
 	plotUpset(setsXray,f'./images/X-ray_{cov}_{afMin}_{afMax}_{extention}.png')
 	setsProton = buildSets(out_pac+"/Proton*"+extention,cov,afMin,afMax,extention)
 	plotUpset(setsProton,f'./images/Proton_{cov}_{afMin}_{afMax}_{extention}.png')	
+	
 	setTotal = {}
 	setTotal["Carbon"] = unionSubset(setsCarbon)
 	setTotal["Proton"] = unionSubset(setsProton)

@@ -81,9 +81,9 @@ for array in arrays :
 
 for i in range(n_arrays) :
 	curr=arrays[i] #determina un quale array, condizione, sto lavorando
-	print curr
+	print (curr)
 	names_curr = findnames(curr)
-	print names_curr
+	print (names_curr)
 
 	stats='results_cov/stats'+names_arrays[i]
 	

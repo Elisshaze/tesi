@@ -1,15 +1,16 @@
 import glob
-#from supervenn import supervenn
+from supervenn import supervenn
 import matplotlib.pyplot as plt
 from upsetplot import from_memberships,plot,from_contents
 import itertools
 
-out_pac = "/GROUPS/sharedRL/tirocinanti/elisa/out_pacbam"
+out_pac = "/media/elisa/backup/out_pacbam"
 
 def buildSets(globPath, minCov, minAF, maxAF, extention):
 	sets = {}
 	for f in glob.glob(globPath):
-		fname = f.split("/")[2].split(".")[0].split("_")[0:3]
+		print (f)
+		fname = f.split("/")[5].split(".")[0].split("_")[0:3]
 		fname = "_".join(fname)
 		print(fname)
 		sets[fname] = set()
@@ -17,13 +18,14 @@ def buildSets(globPath, minCov, minAF, maxAF, extention):
 			next(pileup)
 			for l in pileup:
 				l = l.strip().split()
-				rsid = l[2]
-				cov = int(l[10])
-				af = float(l[9])
 				if extention == "pabs" :
-					rsid = l [1]
+					rsid = l[1]
 					cov = int(l[9])
-					af = int(l[8])
+					af = float(l[8])
+				if extention == "snps" :
+					rsid = l[2]
+					cov = int(l[10])
+					af = float(l[9])
 	
 				if cov >= minCov and af >= minAF and af <= maxAF:
 					sets[fname].add(rsid)
@@ -46,10 +48,11 @@ minCov = [10,20]
 af = [(0.1,0.9),(0.2,0.8)]
 ex = ['snps', 'pabs']
 
-for cov, afRange, extention in itertools.product(minCov,af, ex):
+for cov, afRange, extention in itertools.product(minCov,af,ex):
 	afMin = afRange[0]
 	afMax = afRange[1]	
 
+	print (out_pac+"/Carbon*."+extention)
 	setsCarbon = buildSets(out_pac+"/Carbon*."+extention,cov,afMin,afMax,extention)
 	plotUpset(setsCarbon,f'./images/Carbon_{cov}_{afMin}_{afMax}_{extention}.png')
 	setsMock = buildSets(out_pac+"/mock*."+extention,cov,afMin,afMax,extention)

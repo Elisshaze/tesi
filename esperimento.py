@@ -127,8 +127,6 @@ sns.relplot(data= df, x="af_x", y="af_y", hue="color", legend=False)
 
 plt.show()
 
-
-'''
 #0.1 =< af_x =< 0.9 && (af_y =< 0.1 || af_y >= 0.9) = rosso
 
 #0.1 =< af_y =< 0.9 && (af_x =< 0.1 || af_x >= 0.9) = blu
@@ -157,3 +155,35 @@ labels = [fil1, fil2, fil3]
 supervenn(sets, labels)
 
 plt.show()
+
+'''
+
+
+colnames = ['val', 'dbsnp', 'boh']
+df1 = pd.read_csv('p1', names=colnames, sep='\t')
+df2 = pd.read_csv('p2', names=colnames, sep='\t')
+df3 = pd.read_csv('p3', names=colnames, sep='\t')
+df4 = pd.read_csv('p4', names=colnames, sep='\t')
+#df1 = pd.read_csv('prova1', names=colnames, sep='\t')
+#df2 = pd.read_csv('prova2', names=colnames, sep='\t')
+#df3 = pd.read_csv('prova3', names=colnames, sep='\t')
+
+
+dfs=[df1, df2, df3, df4]
+df_x = df1.rename({'dbsnp' : 'rsid'}, axis=1)
+df_y = df2.rename(columns = {'dbsnp' : 'rsid'})
+
+result = pd.merge(df_x, df_y, on='rsid', how='outer', suffixes=('_x', '_y'))
+print (result)
+#result.to_csv("csv_prova", sep='\t')
+'''
+result1 = pd.merge(df4, df3, on='dbsnp', how='outer', suffixes=('_1', '_2'))
+print (result1)
+#result1.to_csv("csv_prova1", sep='\t')
+
+result2 = pd.merge(result, result1, on='dbsnp', how='outer', suffixes=('_3', '_4'))
+print (result2)
+#result1.to_csv("csv_prova1", sep='\t')
+
+'''
+

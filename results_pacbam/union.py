@@ -12,7 +12,7 @@ import itertools
 
 in_pac = "/media/elisa/backup/out_pacbam/"
 out_csvs = "./csvs/"
-
+'''
 def makeScatters ():
 	fig = plt.figure()
 	fig.subplots_adjust(hspace=0.4, wspace=0.4)
@@ -20,7 +20,7 @@ def makeScatters ():
     	ax = fig.add_subplot(2, 3, i)
     	ax.text(0.5, 0.5, str((2, 3, i)),
            		fontsize=18, ha='center')
-
+'''
 
 def makeUnion (dfs, path) :
 	merge = pd.merge(dfs[0], dfs[1], on='pos', how='outer', suffixes=('_0', '_1'))
@@ -51,12 +51,12 @@ for con, frac, afRange in itertools.product(condition, fraction, af):
 	dfs = []
 	for f in glob.glob(path):
 		print (f)
-		'''
+		
 		df = pd.read_csv(f, sep='\t')
 		filt=((df['af'] >= afMin) & (df['af'] <= afMax)) & (df['cov'] >= minCov)
 		df = df[filt]
 		first_column = df.pop('pos')
 		df.insert(0, 'pos', first_column)
 		dfs.append(df)
-		'''
-	#makeUnion(dfs, f'{files}_{afMin}_{afMax}')
+		
+	makeUnion(dfs, f'{files}_{afMin}_{afMax}')

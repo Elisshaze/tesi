@@ -1,0 +1,7 @@
+	val_x	dbsnp	boh_x	val_y	boh_y	val	boh
+0	2.0	a	abc1	2	abc2	2.0	abc3
+1	2.0	b	abc1	2	abc2	2.0	abc3
+2	2.0	c	abc1	2	abc2	2.0	abc3
+3	2.0	d	abc1	2	abc2	2.0	abc3
+4	2.0	e	abc1	2	abc2	2.0	abc3
+5		f		2	abc2		

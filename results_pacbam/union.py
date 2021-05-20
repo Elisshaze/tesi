@@ -9,6 +9,21 @@ import numpy as np
 import seaborn as sns
 import itertools
 
+def retrieveName (files):
+	names =[]
+	for f in files:
+		split = f.split(".")
+		extention = split[-1]
+		control = split[-3]
+		fname = f.split("/")[5].split(".")[0].split("_")[0:3]
+
+		base= "_".join(fname)
+		fname = base+"_"+extention
+		if control == "recalibrated" :
+			fname = base+"_"+control+"."+extention
+		names.append(fname)
+	return names
+
 
 in_pac = "/media/elisa/backup/out_pacbam/"
 out_csvs = "./csvs/"
@@ -22,7 +37,7 @@ def makeScatters ():
            		fontsize=18, ha='center')
 '''
 
-def makeUnion (dfs, path) :
+def makeUnion (dfs, path, names) :
 	merge = pd.merge(dfs[0], dfs[1], on='pos', how='outer', suffixes=('_0', '_1'))
 	i=2
 	while i < (len(dfs)-1) :
@@ -32,7 +47,7 @@ def makeUnion (dfs, path) :
 		merge = result1
 		i+=2
 	print (merge)
-	merge.to_csv(f'{out_csvs}{path}.csv')
+	merge.to_csv(f'{out_csvs}{path}.csv', sep='\t', names=names)
 
 
 condition = ["mock", "Carbon", "Proton", "X-ray"]
@@ -47,11 +62,11 @@ for con, frac, afRange in itertools.product(condition, fraction, af):
 	path = f'{in_pac}{files}_*'
 
 	print (path)
-
+	fils = []
 	dfs = []
 	for f in glob.glob(path):
 		print (f)
-		
+		fils.append(f)
 		df = pd.read_csv(f, sep='\t')
 		filt=((df['af'] >= afMin) & (df['af'] <= afMax)) & (df['cov'] >= minCov)
 		df = df[filt]
@@ -59,4 +74,5 @@ for con, frac, afRange in itertools.product(condition, fraction, af):
 		df.insert(0, 'pos', first_column)
 		dfs.append(df)
 		
-	makeUnion(dfs, f'{files}_{afMin}_{afMax}')
+	names=retrieveName(fils)
+	makeUnion(dfs, f'{files}_{afMin}_{afMax}', names)

@@ -10,7 +10,7 @@ import numpy as np
 import seaborn as sns
 import itertools
 pd.set_option('display.max_colwidth', None)
-out_pacbam = "/media/elisa/backup/out_pacbam/"
+out_pacbam = "/media/elisa/backup/out_pacbam_recalib/"
 out_aseq = "/media/elisa/backup/out_aseq/"
 out_aseq_recalib = "/media/elisa/backup/out_aseq_recalib/"
 
@@ -20,12 +20,14 @@ out_aseq_recalib = "/media/elisa/backup/out_aseq_recalib/"
 
 
 minCov = 20
+
 def makeDfs (files, names, indexes, con, afMin, afMax, top):
 	dfs = []
 	prova = []
 	i=0
 	for f in files :
 		df = pd.read_csv(f, sep='\t')
+		print (df)
 		df = df[(df['cov'] >= minCov)]
 		dfs.append(df)
 		prova.append(f)
@@ -46,19 +48,18 @@ def makeDfs (files, names, indexes, con, afMin, afMax, top):
 		se = "S"+str(s)
 		print (fi, se)
 
-	
-		#aseq * aseq
-		df = pd.merge(dfs[indexes.index(fi+".ASEQ")], dfs[indexes.index(se+".ASEQ")], on="dbsnp", how="inner")
-		filt=((df['af_x'] >= afMin) & (df['af_x'] <= afMax)) & ((df['af_y'] >= afMin) & (df['af_y'] <= afMax))
-		df = df[filt]
-		intersections.append(df)
-		names_couples.append([names[indexes.index(fi+".ASEQ")], names[indexes.index(se+".ASEQ")]])
-
 		#aseq * aseq (almeno uno dei due)
 		inter = pd.merge(dfs[indexes.index(fi+".ASEQ")], dfs[indexes.index(se+".ASEQ")], on='dbsnp', how='inner')
 		filt=((inter['af_x'] >= afMin) & (inter['af_x'] <= afMax)) | ((inter['af_y'] >= afMin) & (inter['af_y'] <= afMax))
 		inter = inter[filt]
 		intersections.append(inter)
+		names_couples.append([names[indexes.index(fi+".ASEQ")], names[indexes.index(se+".ASEQ")]])
+
+		#aseq * aseq
+		df = pd.merge(dfs[indexes.index(fi+".ASEQ")], dfs[indexes.index(se+".ASEQ")], on="dbsnp", how="inner")
+		filt=((df['af_x'] >= afMin) & (df['af_x'] <= afMax)) & ((df['af_y'] >= afMin) & (df['af_y'] <= afMax))
+		df = df[filt]
+		intersections.append(df)
 		names_couples.append([names[indexes.index(fi+".ASEQ")], names[indexes.index(se+".ASEQ")]])
 
 		#recalib * aseq
@@ -123,7 +124,7 @@ def makeScatters (dfs, names_couples, afMin, afMax, title) :
 		ax = fig.add_subplot(4, 2, i)
 		ax.autolayout=False
 		ax.set_ylim([-0.1, 1.2])
-		if i== 1 : 
+		if i== 2 : 
 			ax.set_title(names_couples[i-1][0]+"*"+names_couples[i-1][1]+" both afs in range, "+lines, fontsize=24, ha='center')
 		else :
 			ax.set_title(names_couples[i-1][0]+"*"+names_couples[i-1][1]+", "+lines, fontsize=24, ha='center')
@@ -131,8 +132,7 @@ def makeScatters (dfs, names_couples, afMin, afMax, title) :
 	
 		df['color']=np.nan
 
-		colors = ["#13f007", "#ebe156", "#4d32ed"]
-		sns.set_palette(sns.color_palette(colors))
+		colors = ['#747FE3', '#8EE35D', '#E37346']
 		for index in df.index:
 			afx=df.loc[index, "af_x"]
 			afy=df.loc[index, "af_y"]
@@ -142,8 +142,13 @@ def makeScatters (dfs, names_couples, afMin, afMax, title) :
 				df.loc[index, "color"] = 1
 			else :
 				df.loc[index, "color"] = 2
+
+		if i== 2 : 
+			sns.scatterplot(data = df,  x="af_x", y="af_y", hue="color",  s=40, legend=False, ax=ax)
+		else :
+			sns.scatterplot(data = df,  x="af_x", y="af_y", hue="color", palette=colors,  s=40, legend=False, ax=ax)
 				
-		sns.scatterplot(data = df,  x="af_x", y="af_y", hue="color",  s=40, legend=False, ax=ax)
+		
 		i+=1 
 	plt.savefig(f"./results_pacbam/grid/{title}_scatter.pdf", dpi=1000)
 	#plt.show()
@@ -215,7 +220,7 @@ for con, frac, afRange in itertools.product(condition, fraction, af):
 			files.append(f)
 	
 	files.sort()
-	print (files, )
+	print (files)
 	names, indexes = retrieveName(files)
 	print (names, indexes)
 	print (afMin, afMax)

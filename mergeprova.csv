@@ -1,5 +1,0 @@
-	chr_x	pos_x	dbsnp	MAF_x	ref_x	alt_x	A_x	C_x	G_x	T_x	RD_x	Ars_x	Crs_x	Grs_x	Trs_x	af_x	cov_x	chr_y	pos_y	MAF_y	ref_y	alt_y	A_y	C_y	G_y	T_y	RD_y	Ars_y	Crs_y	Grs_y	Trs_y	af_y	cov_y	chr	pos	MAF	ref	alt	A	C	G	T	RD	Ars	Crs	Grs	Trs	af	cov
-0	chr5	137107053	rs1131912092	.	A	C	9	1	0	0	10	6	1	0	0	0.1	10	chr5	137107053	.	A	C	9	1	0	0	10	6	1	0	0	0.1	10	chr5	137107053	.	A	C	9	1	0	0	10	6	1	0	0	0.1	10
-1	chr5	137650572	rs254234872	.	G	A	2	0	14	0	16	2	0	0	0	0.125	16	chr5	137650572	.	G	A	2	0	14	0	16	2	0	0	0	0.125	16	chr5	137650572	.	G	A	2	0	14	0	16	2	0	0	0	0.125	16
-2	chr5	137650594	rs223326064	.	C	A	2	12	0	0	14	0	7	0	0	0.14285699999999998	14	chr5	137650594	.	C	A	2	12	0	0	14	0	7	0	0	0.14285699999999998	14	chr5	137650594	.	C	A	2	12	0	0	14	0	7	0	0	0.14285699999999998	14
-3	chr5	137650841	rs246027318	.	G	T	0	0	17	4	21	0	0	6	3	0.190476	21	chr5	137650841	.	G	T	0	0	17	4	21	0	0	6	3	0.190476	21	chr5	137650841	.	G	T	0	0	17	4	21	0	0	6	3	0.190476	21
